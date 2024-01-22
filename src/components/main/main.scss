@@ -1,0 +1,24 @@
+.main {
+    padding: 35px 60px;
+    &__header {
+        display: flex;
+        justify-content: space-between;
+    }
+    &__search {
+        width: 800px;
+        height: 50px;
+        padding: 10px 20px;
+        border-radius: 4px;
+        background: #F4F4FF;
+        color: #000;
+        font-family: Manrope;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+    }
+    &__test {
+        width: 200px;
+        height: 200px;
+    }
+}
