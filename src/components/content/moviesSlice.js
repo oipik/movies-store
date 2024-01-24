@@ -14,6 +14,14 @@ export const fetchMovies = createAsyncThunk(
     }
 )
 
+export const fetchAddMovies = createAsyncThunk(
+    "movies/fetchAddMovies",
+    (url) => {
+        const { request } = useHttp();
+        return request(url)
+    }
+)
+
 const movies = createSlice({
     name: "movies",
     initialState,
@@ -26,6 +34,9 @@ const movies = createSlice({
                 state.movies = action.payload.Search;
             })
             .addCase(fetchMovies.rejected, state => { state.moviesLoadingStatus = "error" })
+            .addCase(fetchAddMovies.fulfilled, (state, action) => {
+                state.movies = state.movies.concat(action.payload.Search);
+            })
             .addDefaultCase(() => { })
     }
 })
