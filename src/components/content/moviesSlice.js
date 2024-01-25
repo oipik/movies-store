@@ -1,16 +1,27 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, createEntityAdapter } from "@reduxjs/toolkit";
 import { useHttp } from "../../hooks/http.hook";
 
-const initialState = {
-    movies: [],
-    moviesLoadingStatus: "idle"
-}
+const moviesAdapter = createEntityAdapter({
+    selectId: (movies) => movies.imdbID
+});
+
+const initialState = moviesAdapter.getInitialState({
+    moviesLoadingStatus: "idle",
+    newMoviesLoadingStatus: false,
+})
 
 export const fetchMovies = createAsyncThunk(
     "movies/fetchMovies",
-    (url) => {
+    async (url, { rejectWithValue }) => {
         const { request } = useHttp();
-        return request(url)
+        const response = await request(url);
+        if (response.Response === "True") {
+            console.log(response);
+            return response;
+        } else if (response.Response === "False") {
+            return rejectWithValue('Movie not found');
+        }
+        return response
     }
 )
 
@@ -31,14 +42,19 @@ const movies = createSlice({
             .addCase(fetchMovies.pending, state => { state.moviesLoadingStatus = "loading" })
             .addCase(fetchMovies.fulfilled, (state, action) => {
                 state.moviesLoadingStatus = "idle";
-                state.movies = action.payload.Search;
+                moviesAdapter.setAll(state, action.payload.Search);
             })
             .addCase(fetchMovies.rejected, state => { state.moviesLoadingStatus = "error" })
+
+            .addCase(fetchAddMovies.pending, state => { state.newMoviesLoadingStatus = true })
             .addCase(fetchAddMovies.fulfilled, (state, action) => {
-                state.movies = state.movies.concat(action.payload.Search);
+                moviesAdapter.setMany(state, action.payload.Search);
+                state.newMoviesLoadingStatus = false;
             })
             .addDefaultCase(() => { })
     }
 })
+
+export const { selectAll: getAllMovies } = moviesAdapter.getSelectors(state => state.movies);
 
 export default movies.reducer;

@@ -12,13 +12,13 @@ const Main = () => {
     const KEY = "5bedb772";
 
     function handleKeyDown(e, value) {
-        if (value === "") {
-            alert("Вы ввели пустую строку");
+        if (e.key !== "Enter" || e.keyCode !== 13) {
             return;
-        } else if (e.key !== "Enter" || e.keyCode !== 13) {
+        } else if ((e.key === "Enter" || e.keyCode === 13) && (value === "")) {
+            alert("Вы ввели пустую строку!!!");
             return;
         }
-        
+
         dispatch(fetchMovies(`http://www.omdbapi.com/?s=${value}&plot=full&apikey=${KEY}`))
     }
 

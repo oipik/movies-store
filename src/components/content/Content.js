@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { fetchMovies, fetchAddMovies } from "./moviesSlice";
+import { fetchMovies, fetchAddMovies, getAllMovies } from "./moviesSlice";
 
 import Spinner from "../../spinner/Spinner";
 import { notFound } from "../../images";
@@ -8,32 +8,32 @@ import "./content.scss";
 
 const Content = () => {
     const dispatch = useDispatch();
-    const data = useSelector(state => state.movies.movies);
-    const moviesLoadingStatus = useSelector(state => state.movies.moviesLoadingStatus);
-    
+    const data = useSelector(getAllMovies);
+    const { moviesLoadingStatus, newMoviesLoadingStatus } = useSelector(state => state.movies);
+
     const KEY = "5bedb772";
 
-    useEffect(() => {
+    const getRandomPage = () => {
         const min = 1;
         const max = 20;
-        const page = Math.round(min - 0.5 + Math.random() * (max - min + 1))
+        return Math.round(min - 0.5 + Math.random() * (max - min + 1));
+    } 
+
+    let page = getRandomPage();
+    
+    useEffect(() => {
         dispatch(fetchMovies(`http://www.omdbapi.com/?s=requiem&plot=full&page=${page}&apikey=${KEY}`));
         /* eslint-disable react-hooks/exhaustive-deps */
     }, [])
 
+    const addMovies = () => {
+        dispatch(fetchAddMovies(`http://www.omdbapi.com/?s=requiem&plot=full&page=${++page}&apikey=${KEY}`));
+    }
+
     if (moviesLoadingStatus === "loading") {
         return <Spinner/>
     } else if (moviesLoadingStatus === "error") {
-        return <p className="error">Ошибка загрузки данных</p>
-    }
-
-    console.log(data);
-
-    const addMovies = () => {
-        const min = 1;
-        const max = 20;
-        const page = Math.round(min - 0.5 + Math.random() * (max - min + 1))
-        dispatch(fetchAddMovies(`http://www.omdbapi.com/?s=requiem&plot=full&page=${page}&apikey=${KEY}`));
+        return <p className="error">Ошибка введенных данных! Попробуйте снова.</p>
     }
 
     function renderItems(data) {
@@ -58,7 +58,7 @@ const Content = () => {
         )
     }
 
-    const elements = moviesLoadingStatus === "loading" ? console.log("loading...") : renderItems(data);
+    const elements = moviesLoadingStatus !== "loading" ? renderItems(data) : null;
 
     return (
         <section className="content">
@@ -66,7 +66,10 @@ const Content = () => {
                 {elements}
             </div>
             <div className="content-box__btn">
-                <button className="content__btn" onClick={addMovies}>Load more</button>
+                <button 
+                className="content__btn" 
+                onClick={addMovies}
+                disabled={newMoviesLoadingStatus}>Load more</button>
             </div>
         </section>
     )
