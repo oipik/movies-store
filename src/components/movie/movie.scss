@@ -1,0 +1,32 @@
+.movie {
+    width: 100%;
+    &__items {
+        display: flex;
+    }
+    &-img__box {
+        width: 300px;
+        height: 400px;
+        margin-right: 20px;
+    }
+    &__img {
+        width: 300px;
+        height: 400px;
+        object-fit: cover;
+    }
+    &__content {
+        width: 780px;
+    }
+    &__title {
+        margin-bottom: 15px;
+    }
+    &__descr {
+        font-size: 22px;
+        margin-bottom: 15px;
+    }
+    &__list-item {
+        font-size: 20px;
+        span:first-child {
+            font-weight: 900;
+        }
+    }
+}

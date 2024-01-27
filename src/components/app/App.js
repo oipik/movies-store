@@ -1,16 +1,27 @@
-import Main from '../main/Main';
-import Content from '../content/Content';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
+import Header from '../header/Header';
+import MainPage from '../mainPage/MainPage';
+import Movie from '../movie/Movie';
 
 import './app.scss';
 
+export const KEY = "5bedb772";
+
 function App() {
+
     return (
-        <div className="App">
-            <div className="container">
-                <Main />
-                <Content />
+        <Router>
+            <div className="App">
+                <div className="container">
+                    <Routes>
+                        <Route path="/" element={<MainPage/>} />
+                        <Route path="/movie/:imdbID" element={<Movie/>} />
+                    </Routes>
+                </div>
             </div>
-        </div>
+        </Router>
+
     );
 }
 

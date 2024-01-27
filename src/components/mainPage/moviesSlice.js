@@ -8,6 +8,7 @@ const moviesAdapter = createEntityAdapter({
 const initialState = moviesAdapter.getInitialState({
     moviesLoadingStatus: "idle",
     newMoviesLoadingStatus: false,
+    visibleButton: true
 })
 
 export const fetchMovies = createAsyncThunk(
@@ -16,12 +17,10 @@ export const fetchMovies = createAsyncThunk(
         const { request } = useHttp();
         const response = await request(url);
         if (response.Response === "True") {
-            console.log(response);
             return response;
         } else if (response.Response === "False") {
             return rejectWithValue('Movie not found');
         }
-        return response
     }
 )
 
@@ -33,10 +32,14 @@ export const fetchAddMovies = createAsyncThunk(
     }
 )
 
-const movies = createSlice({
+const moviesSlice = createSlice({
     name: "movies",
     initialState,
-    reducers: {},
+    reducers: {
+        changeVisibleButton: (state, action) => {
+            state.visibleButton = action.payload;
+        }
+    },
     extraReducers: builder => {
         builder
             .addCase(fetchMovies.pending, state => { state.moviesLoadingStatus = "loading" })
@@ -56,5 +59,5 @@ const movies = createSlice({
 })
 
 export const { selectAll: getAllMovies } = moviesAdapter.getSelectors(state => state.movies);
-
-export default movies.reducer;
+export const { changeVisibleButton } = moviesSlice.actions;
+export default moviesSlice.reducer;

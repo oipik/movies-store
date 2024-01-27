@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { fetchMovies } from "../content/moviesSlice";
+import { fetchMovies, changeVisibleButton } from "../mainPage/moviesSlice";
 
-import "./main.scss";
+import "./header.scss";
 import { logo } from "../../images";
 
-const Main = () => {
+const Header = () => {
     const [value, setValue] = useState('');
 
     const dispatch = useDispatch();
@@ -18,25 +18,25 @@ const Main = () => {
             alert("Вы ввели пустую строку!!!");
             return;
         }
-
+        dispatch(changeVisibleButton(false))
         dispatch(fetchMovies(`http://www.omdbapi.com/?s=${value}&plot=full&apikey=${KEY}`))
     }
 
     return (
-        <section className="main">
-            <div className="main__header">
-                <img className="main__logo" src={logo} alt="logo" />
+        <section className="header">
+            <div className="header__header">
+                <img className="header__logo" src={logo} alt="logo" />
                 <input
-                    className="main__search"
+                    className="header__search"
                     type="text"
                     placeholder="Search"
                     value={value}
                     onChange={(e) => setValue(e.target.value)}
                     onKeyDown={(e) => handleKeyDown(e, value)} />
-                <div className="main__icons"></div>
+                <div className="header__icons"></div>
             </div>
         </section>
     )
 }
 
-export default Main;
+export default Header;
