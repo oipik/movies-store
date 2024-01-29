@@ -14,9 +14,10 @@ function App() {
         <Router>
             <div className="App">
                 <div className="container">
+                    <Header />
                     <Routes>
-                        <Route path="/" element={<MainPage/>} />
-                        <Route path="/movie/:imdbID" element={<Movie/>} />
+                        <Route path="/" element={<MainPage />} />
+                        <Route path="movie/:imdbID" element={<Movie />} />
                     </Routes>
                 </div>
             </div>

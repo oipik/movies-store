@@ -4,7 +4,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchMovie } from "./movieSlice";
 import { KEY } from "../app/App";
 
-import Header from "../header/Header";
+import Spinner from "../../spinner/Spinner";
+import { notFound } from "../../images"; 
 import "./movie.scss";
 
 const Movie = () => {
@@ -12,55 +13,64 @@ const Movie = () => {
 
     const dispatch = useDispatch();
     const data = useSelector(state => state.movie.movie);
-
-    console.log(data)
+    const movieLoadingStatus = useSelector(state => state.movie.movieLoadingStatus);
 
     useEffect(() => {
         dispatch(fetchMovie(`http://www.omdbapi.com/?i=${imdbID}&plot=full&apikey=${KEY}`));
-    }, [imdbID])
+    }, [imdbID, dispatch])
 
-    console.log(data.Ratings === true ? "equal" : "not true")
-    // console.log(data.Ratings === 0 ? "another" : data.Ratings)
+    if (movieLoadingStatus === "loading") {
+        return <Spinner />
+    } else if (movieLoadingStatus === "error") {
+        return <p className="error">Ошибка! Попробуйте снова.</p>
+    }
+
+    const rating = data.Ratings === undefined ? null : (data.Ratings.length > 0 ? `${data.Ratings[0].Source}: ${data.Ratings[0].Value}` : "Рейтинг отсутствует");
+    const img = data.Poster !== "N/A" ? data.Poster : notFound;
+    const title = data.Title !== "N/A" ? data.Title : "Название отсутствует";
+    const description = data.Plot !== "N/A" ? data.Plot : "Описание отсутствует";
+    const year = data.Year !== "N/A" ? data.Year : "Год выхода отсутствует"
+    const producer = data.Director !== "N/A" ? data.Director : "Режиссер неизвестен";
+    const country = data.Country !== "N/A" ? data.Country : "Страна не указана";
+    const language = data.Language !== "N/A" ? data.Language : "Язык не указан";
+    const runtime = data.Runtime !== "N/A" ? data.Runtime : "Продолжительность не указана";
 
     return (
         <>
-            <Header />
             <section className="movie">
                 <div className="movie__inner">
                     <div className="movie__items">
                         <div className="movie-img__box">
-                            <img className="movie__img" src={data.Poster} alt={data.Title} />
+                            <img className="movie__img" src={img} alt={title} />
                         </div>
                         <div className="movie__content">
-                            <h1 className="movie__title">{data.Title}</h1>
-                            <p className="movie__descr">{data.Plot}</p>
+                            <h1 className="movie__title">{title}</h1>
+                            <p className="movie__descr">{description}</p>
                             <div className="movie__description">
                                 <ul className="movie__list">
                                     <li className="movie__list-item">
                                         <span>Год выхода: </span>
-                                        <span>{data.Year}</span>
+                                        <span>{year}</span>
                                     </li>
                                     <li className="movie__list-item">
                                         <span>Режиссер: </span>
-                                        <span>{data.Director}</span>
+                                        <span>{producer}</span>
                                     </li>
                                     <li className="movie__list-item">
                                         <span>Страна: </span>
-                                        <span>{data.Country}</span>
+                                        <span>{country}</span>
                                     </li>
                                     <li className="movie__list-item">
                                         <span>Язык: </span>
-                                        <span>{data.Language}</span>
+                                        <span>{language}</span>
                                     </li>
                                     <li className="movie__list-item">
-                                        <span>Время: </span>
-                                        <span>{data.Runtime}</span>
+                                        <span>Продолжительность: </span>
+                                        <span>{runtime}</span>
                                     </li>
                                     <li className="movie__list-item">
                                         <span>Рейтинг: </span>
-                                        <span>
-                                            {/* {data.Ratings !== undefined ? `${data.Ratings[0].Source}: ${data.Ratings[0].Value}` : "N/A"} */}
-                                        </span>
+                                        <span>{rating}</span>
                                     </li>
                                 </ul>
                             </div>

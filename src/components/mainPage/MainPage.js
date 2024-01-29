@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import { fetchMovies, fetchAddMovies, getAllMovies, changeVisibleButton } from "./moviesSlice";
 import { KEY } from "../app/App";
 
-import Header from "../header/Header";
 import Spinner from "../../spinner/Spinner";
 import { notFound } from "../../images";
 import "./mainPage.scss";
@@ -39,7 +38,6 @@ const MainPage = () => {
     }
 
     function renderItems(data) {
-        console.log(data);
         const items = data.map((item, i) => {
             const img = item.Poster === "N/A" ? notFound : item.Poster
             return (
@@ -65,7 +63,6 @@ const MainPage = () => {
 
     return (
         <>
-            <Header />
             <section className="mainPage">
                 <div className="mainPage__inner">
                     {elements}

@@ -23,19 +23,21 @@ const Header = () => {
     }
 
     return (
-        <section className="header">
-            <div className="header__header">
-                <img className="header__logo" src={logo} alt="logo" />
-                <input
-                    className="header__search"
-                    type="text"
-                    placeholder="Search"
-                    value={value}
-                    onChange={(e) => setValue(e.target.value)}
-                    onKeyDown={(e) => handleKeyDown(e, value)} />
-                <div className="header__icons"></div>
-            </div>
-        </section>
+        <>
+            <section className="header">
+                <div className="header__header">
+                    <img className="header__logo" src={logo} alt="logo" />
+                    <input
+                        className="header__search"
+                        type="text"
+                        placeholder="Search"
+                        value={value}
+                        onChange={(e) => setValue(e.target.value)}
+                        onKeyDown={(e) => handleKeyDown(e, value)} />
+                    <div className="header__icons"></div>
+                </div>
+            </section>
+        </>
     )
 }
 
