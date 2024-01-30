@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { fetchMovies, changeVisibleButton } from "../mainPage/moviesSlice";
+import { fetchMovies } from "../movies/moviesSlice";
 
 import "./header.scss";
 import { logo } from "../../images";
@@ -18,7 +18,6 @@ const Header = () => {
             alert("Вы ввели пустую строку!!!");
             return;
         }
-        dispatch(changeVisibleButton(false))
         dispatch(fetchMovies(`http://www.omdbapi.com/?s=${value}&plot=full&apikey=${KEY}`))
     }
 

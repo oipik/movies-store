@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import Header from '../header/Header';
-import MainPage from '../mainPage/MainPage';
+import Movies from '../movies/Movies';
 import Movie from '../movie/Movie';
 
 import './app.scss';
@@ -16,8 +16,8 @@ function App() {
                 <div className="container">
                     <Header />
                     <Routes>
-                        <Route path="/" element={<MainPage />} />
-                        <Route path="movie/:imdbID" element={<Movie />} />
+                        <Route path="/" element={<Movies />} />
+                        <Route path="/movie/:id" element={<Movie />} />
                     </Routes>
                 </div>
             </div>

@@ -9,15 +9,15 @@ import { notFound } from "../../images";
 import "./movie.scss";
 
 const Movie = () => {
-    const { imdbID } = useParams();
+    const { id } = useParams();
 
     const dispatch = useDispatch();
     const data = useSelector(state => state.movie.movie);
     const movieLoadingStatus = useSelector(state => state.movie.movieLoadingStatus);
 
     useEffect(() => {
-        dispatch(fetchMovie(`http://www.omdbapi.com/?i=${imdbID}&plot=full&apikey=${KEY}`));
-    }, [imdbID, dispatch])
+        dispatch(fetchMovie(`http://www.omdbapi.com/?i=${id}&plot=full&apikey=${KEY}`));
+    }, [id, dispatch])
 
     if (movieLoadingStatus === "loading") {
         return <Spinner />
