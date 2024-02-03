@@ -7,6 +7,7 @@ const moviesAdapter = createEntityAdapter({
 
 const initialState = moviesAdapter.getInitialState({
     moviesLoadingStatus: "idle",
+    activeFilter: ""
 })
 
 export const fetchMovies = createAsyncThunk(
@@ -25,7 +26,11 @@ export const fetchMovies = createAsyncThunk(
 const moviesSlice = createSlice({
     name: "movies",
     initialState,
-    reducers: {},
+    reducers: {
+        filterChanged: (state, action) => {
+            state.activeFilter = action.payload;
+        }   
+    },
     extraReducers: builder => {
         builder
             .addCase(fetchMovies.pending, state => { state.moviesLoadingStatus = "loading" })
@@ -39,4 +44,6 @@ const moviesSlice = createSlice({
 })
 
 export const { selectAll: getAllMovies } = moviesAdapter.getSelectors(state => state.movies);
+export const { filterChanged } = moviesSlice.actions;
+
 export default moviesSlice.reducer;

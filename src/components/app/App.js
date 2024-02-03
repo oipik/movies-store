@@ -14,9 +14,13 @@ function App() {
         <Router>
             <div className="App">
                 <div className="container">
-                    <Header />
                     <Routes>
-                        <Route path="/" element={<Movies />} />
+                        <Route path="/" element={
+                            <>
+                                <Header />
+                                <Movies />
+                            </>
+                        } />
                         <Route path="/movie/:id" element={<Movie />} />
                     </Routes>
                 </div>

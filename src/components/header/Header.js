@@ -19,6 +19,7 @@ const Header = () => {
             return;
         }
         dispatch(fetchMovies(`http://www.omdbapi.com/?s=${value}&plot=full&apikey=${KEY}`))
+        setValue('');
     }
 
     return (

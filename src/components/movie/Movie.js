@@ -1,15 +1,16 @@
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchMovie } from "./movieSlice";
 import { KEY } from "../app/App";
 
 import Spinner from "../../spinner/Spinner";
-import { notFound } from "../../images"; 
+import { notFound } from "../../images";
 import "./movie.scss";
 
 const Movie = () => {
     const { id } = useParams();
+    const navigate = useNavigate();
 
     const dispatch = useDispatch();
     const data = useSelector(state => state.movie.movie);
@@ -37,6 +38,7 @@ const Movie = () => {
 
     return (
         <>
+            <button className="movie-btn__goback" onClick={() => navigate(-1)}>Назад</button>
             <section className="movie">
                 <div className="movie__inner">
                     <div className="movie__items">
